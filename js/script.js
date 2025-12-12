@@ -1,35 +1,3 @@
-// // context ist mein audio kontext 
-// // device ist rnbo device
-// // source ist die audiosource
-
-
-// // audio kontext kreieren, tyler the creator indisch rhein
-// let WAContext = window.AudioContext || window.webkitAudioContext;
-// let context = new WAContext();
-
-// // gain regler
-// const gainNode = context.createGain();
-// gainNode.connect(context.destination);
-// device.node.connect(gainNode);
-
-// // web audio wird erst nach user input aktiviert thank god
-// let button = document.getElementById("webaudio");
-// button.onpointerdown = () => {context.resume()};
-
-// // rnbo setup
-// const { createDevice } = require("@rnbo/js");
-// const device = await createDevice({ audioContext, patcher});
-
-// // hier verbinden wir uns mit dem audio input vom computer
-// const handleSuccess = (stream) => {
-//     const source = context.createMediaStreamSource(stream);
-//     source.connect(device.node);
-// }
-// navigator.mediaDevices.getUserMedia({ audio: true, video: false})
-//     .then(handleSuccess);
-
-//=====================================================================
-
 // so nochmal!! create device aus rnbo
 console.log("RNO", RNBO);
 const {createDevice} = RNBO;
@@ -40,17 +8,18 @@ let context = new WAContext();
 
 let device;
 
+// PARAMS
+// das der parameter
+let rec;
+let play; 
+let resize;
+
 
 // button der webaudio id hat vorher in html machen und dann funzt das auch
 // quasi der button der 
 let button = document.getElementById("webaudio");
 button.onpointerdown = () => {context.resume()};
 
-// PARAMS
-// das der parameter
-let rec;
-let play; 
-let resize;
 
 // das playbutton
 let recordbtn = document.getElementById("record");
@@ -62,6 +31,7 @@ recordbtn.onpointerdown = () => {
     } else {
         rec.value = 0;
         recindex = 0;
+        saveAudio();
     }
     console.log(rec.value);
 };
@@ -97,7 +67,7 @@ const setup = async ()=> {
 
     // CREATE RNBO
     // hier den patch importen
-    let rawPatcher = await fetch ("../export/wecker2.export.json");
+    let rawPatcher = await fetch ("export/wecker2.export.json");
     // console.log(rawPatcher);
     let patcher = await rawPatcher.json();
 
@@ -105,24 +75,36 @@ const setup = async ()=> {
     device = await RNBO.createDevice({ context, patcher });
 
     // BUFFERS
-    // buffer dependencies natzen
-    let dependencies = await fetch("../export/dependencies.json");
+
+    // LOCAL BUFFERS
+    let dependencies = await fetch("export/dependencies.json");
     dependencies = await dependencies.json();
 
-    // // into device laden
-    // const results = await device.loadDataBufferDependencies(dependencies);
-    // results.forEach(result => {
-    //     if (result.type === "success") {
-    //         console.log('oh yeah mit id ${result.id}');
-    //     } else {
-    //         console.log('oh no mit id ${result.id}, ${result.error}')
-    //     }
-    // });
+    // into device laden
+    const results = await device.loadDataBufferDependencies(dependencies);
+    results.forEach(result => {
+        if (result.type === "success") {
+            console.log('oh yeah mit id ${result.id}');
+        } else {
+            console.log('oh no mit id ${result.id}, ${result.error}')
+        }
+    });
 
-    let samp = await fetch("https://fettesbrot.site/s/szj5D8qd5x8qtaX/download");
-    console.log(samp);
-    // await device.setDataBuffer("mus1", await fetch("https://fettesbrot.site/s/szj5D8qd5x8qtaX/download"));
-
+    // // PULL DIE FILES VON SERVER
+    // let samp = await fetch("https://lovplante.github.io/wakeup/export/media/34.wav");
+    // let arrayBuf = await samp.arrayBuffer();
+    // let audioBuf = await context.decodeAudioData(arrayBuf);
+    // await device.setDataBuffer("mus1", audioBuf);
+    
+    // samp = await fetch("https://lovplante.github.io/wakeup/export/media/50.wav");
+    // arrayBuf = await samp.arrayBuffer();
+    // audioBuf = await context.decodeAudioData(arrayBuf);
+    // await device.setDataBuffer("mus2", audioBuf);
+    
+    // samp = await fetch("https://lovplante.github.io/wakeup/export/media/80.wav");
+    // arrayBuf = await samp.arrayBuffer();
+    // audioBuf = await context.decodeAudioData(arrayBuf);
+    // await device.setDataBuffer("mus3", audioBuf);
 
     // AUDIO IN/OUTPUT
     
@@ -150,6 +132,10 @@ const setup = async ()=> {
     play = device.parametersById.get("play");
 
     resize = device.parametersById.get("resize");
+
+};
+
+const saveAudio = async () => {
 
 };
 
