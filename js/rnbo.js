@@ -9,33 +9,10 @@ let recparam;
 let playparam; 
 let resizeparam;
 
-<<<<<<< Updated upstream
-
-// button der webaudio id hat vorher in html machen und dann funzt das auch
-// quasi der button der 
-let button = document.getElementById("webaudio");
-button.onpointerdown = () => {context.resume()};
-
-
-// das playbutton
-let recordbtn = document.getElementById("record");
-let recindex = 0;
-recordbtn.onpointerdown = () => {
-    if (recindex == 0) {
-        rec.value = 1;
-        recindex = 1;
-    } else {
-        rec.value = 0;
-        recindex = 0;
-        saveAudio();
-    }
-    console.log(rec.value);
-=======
 export function startRec() {
     recparam.value = 1;
     console.log(recparam);
->>>>>>> Stashed changes
-};
+}
 
 export function stopRec() {
     recparam.value = 0;
@@ -92,26 +69,17 @@ export async function initRnbo(context) {
 
     resizeparam = device.parametersById.get("resize");
 
-};
-
-<<<<<<< Updated upstream
-const saveAudio = async () => {
 
 };
-=======
+
 // CONNECT IN/OUTPUT
->>>>>>> Stashed changes
 
 export function connectInput(source) {
     if (!device) throw new Error("no device")
     source.connect(device.node);
 }
 
-<<<<<<< Updated upstream
-setup();
-=======
 export function connectOutput(dest) {
     if (!device) throw new Error("no device")
     device.node.connect(dest);
 }
->>>>>>> Stashed changes
