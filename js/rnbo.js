@@ -1,19 +1,15 @@
 // so nochmal!! create device aus rnbo
 console.log("RNO", RNBO);
 const {createDevice} = RNBO;
-
-// audio kontext machen
-let WAContext = window.AudioContext || window.webkitAudioContext;
-let context = new WAContext();
-
 let device;
 
 // PARAMS
 // das der parameter
-let rec;
-let play; 
-let resize;
+let recparam;
+let playparam; 
+let resizeparam;
 
+<<<<<<< Updated upstream
 
 // button der webaudio id hat vorher in html machen und dann funzt das auch
 // quasi der button der 
@@ -34,36 +30,35 @@ recordbtn.onpointerdown = () => {
         saveAudio();
     }
     console.log(rec.value);
+=======
+export function startRec() {
+    recparam.value = 1;
+    console.log(recparam);
+>>>>>>> Stashed changes
 };
 
-// das recbutton
-let playbtn = document.getElementById("play");
-let playindex = 0;
-playbtn.onpointerdown = () => {
-    if (playindex == 0) {
-        play.value = 1;
-        playindex = 1;
-    } else {
-        play.value = 0;
-        playindex = 0;
-    }
-    console.log(play.value);
+export function stopRec() {
+    recparam.value = 0;
+    console.log(recparam);
 };
 
-// das buffer resize button
-let resbutton = document.getElementById("resize");
-resbutton.onpointerdown = () => {
-    resize.value = 1;
+export function play() {
+    playparam.value = 1;
+    console.log(playparam);
+};
+
+export function stop() {
+    playparam.value = 0;
+    console.log(playparam);
 }
 
-// document.getElementById("play");
-
-// document.getElementById("purge");
-
-// document.getElementById("replay");
+export function resize() {
+    resizeparam.value = 1;
+};
 
 // async function
-const setup = async ()=> {
+export async function initRnbo(context) {
+    if (!context) throw new Error("no Audio Context");
 
     // CREATE RNBO
     // hier den patch importen
@@ -90,54 +85,33 @@ const setup = async ()=> {
         }
     });
 
-    // // PULL DIE FILES VON SERVER
-    // let samp = await fetch("https://lovplante.github.io/wakeup/export/media/34.wav");
-    // let arrayBuf = await samp.arrayBuffer();
-    // let audioBuf = await context.decodeAudioData(arrayBuf);
-    // await device.setDataBuffer("mus1", audioBuf);
-    
-    // samp = await fetch("https://lovplante.github.io/wakeup/export/media/50.wav");
-    // arrayBuf = await samp.arrayBuffer();
-    // audioBuf = await context.decodeAudioData(arrayBuf);
-    // await device.setDataBuffer("mus2", audioBuf);
-    
-    // samp = await fetch("https://lovplante.github.io/wakeup/export/media/80.wav");
-    // arrayBuf = await samp.arrayBuffer();
-    // audioBuf = await context.decodeAudioData(arrayBuf);
-    // await device.setDataBuffer("mus3", audioBuf);
+    // PARAMS
+    recparam = device.parametersById.get("rec");
 
-    // AUDIO IN/OUTPUT
-    
-    // lasset uns ans mic connecten!
-    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-    const micSource = context.createMediaStreamSource(stream);
-    micSource.connect(device.node);
-    // connect das device mit audio output (muss man mayb noch resumen durch button press)
-    // also device.node ist mein device output und context.destination ist der computer output
-    device.node.connect(context.destination);
-    
+    playparam = device.parametersById.get("play");
 
-    // // parameter printen
-    // device.parameters.forEach(parameter => {
-
-    //     console.log(parameter.id);
-    //     console.log(parameter.name);
-    // });
-
-    // parameter changen
-    // const toggle = device.parametersById.get("toggle");
-
-    rec = device.parametersById.get("rec");
-
-    play = device.parametersById.get("play");
-
-    resize = device.parametersById.get("resize");
+    resizeparam = device.parametersById.get("resize");
 
 };
 
+<<<<<<< Updated upstream
 const saveAudio = async () => {
 
 };
+=======
+// CONNECT IN/OUTPUT
+>>>>>>> Stashed changes
 
+export function connectInput(source) {
+    if (!device) throw new Error("no device")
+    source.connect(device.node);
+}
 
+<<<<<<< Updated upstream
 setup();
+=======
+export function connectOutput(dest) {
+    if (!device) throw new Error("no device")
+    device.node.connect(dest);
+}
+>>>>>>> Stashed changes
