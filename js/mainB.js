@@ -1,5 +1,5 @@
 import * as rnbo from "./rnbo.js";
-import * as recorder from "./recorder.js";
+import * as recorder from "./recorderB.js";
 
 // AUDIO CONTEXT
 let WAContext = window.AudioContext || window.webkitAudioContext;
@@ -24,7 +24,6 @@ let recordbtn = document.getElementById("record");
 let playbtn = document.getElementById("play");
 let resbutton = document.getElementById("resize");
 let uploadbtn = document.getElementById("upload");
-let downloadbtn = document.getElementById("download");
 
 
 let recindex = false;
@@ -59,14 +58,10 @@ resbutton.onclick = async () => {
     await context.resume();
 
     rnbo.resize;
-};
+}
 
 uploadbtn.onclick = async () => {
     recorder.uploadFile();
-};
-
-downloadbtn.onclick = async () => {
-    rnbo.download();
 };
 
 

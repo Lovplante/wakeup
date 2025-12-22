@@ -8,6 +8,7 @@ let device;
 let recparam;
 let playparam; 
 let resizeparam;
+let audioCtx;
 
 export function startRec() {
     recparam.value = 1;
@@ -31,6 +32,7 @@ export function resize() {
 
 // async function
 export async function initRnbo(context) {
+    audioCtx = context;
     if (!context) throw new Error("no Audio Context");
 
     // CREATE RNBO
@@ -64,8 +66,6 @@ export async function initRnbo(context) {
     playparam = device.parametersById.get("play");
 
     resizeparam = device.parametersById.get("resize");
-
-
 };
 
 // CONNECT IN/OUTPUT
@@ -73,9 +73,38 @@ export async function initRnbo(context) {
 export function connectInput(source) {
     if (!device) throw new Error("no device")
     source.connect(device.node);
-}
+};
 
 export function connectOutput(dest) {
     if (!device) throw new Error("no device")
     device.node.connect(dest);
-}
+};
+
+
+export async function download() {
+    try {
+        let fileResponse = await fetch("../web2/recordings/recB.wav");
+        if (!fileResponse.ok) throw new Error("file no bueno");    
+
+        let arrayBuf = await fileResponse.arrayBuffer();
+        let message = await audioCtx.decodeAudioData(arrayBuf);
+
+        await device.setDataBuffer("record", message);
+        console.log("ja sollte gut laufen");
+    } catch (err) {
+        console.log("pfuhh ne");
+    }
+   
+   
+   
+   
+    // try {
+    //     let fileResponse = await fetch("../web2/recordings/recB.wav");
+    //     let arrayBuf = await fileResponse.arrayBuffer();
+    //     let message = await audioCtx.decodeAudioData(arrayBuf);
+    //     console.log(message);
+
+    // } catch {
+    //     console.log("kannste knicken");
+    // }
+};
