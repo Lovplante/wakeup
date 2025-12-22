@@ -60,5 +60,9 @@ resbutton.onclick = async () => {
     rnbo.resize;
 }
 
+uploadbtn.onclick = async () => {
+    recorder.uploadFile();
+};
+
 
 // RECORDER STUFF

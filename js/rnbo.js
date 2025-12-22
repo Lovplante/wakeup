@@ -11,22 +11,18 @@ let resizeparam;
 
 export function startRec() {
     recparam.value = 1;
-    console.log(recparam);
 }
 
 export function stopRec() {
     recparam.value = 0;
-    console.log(recparam);
 };
 
 export function play() {
     playparam.value = 1;
-    console.log(playparam);
 };
 
 export function stop() {
     playparam.value = 0;
-    console.log(playparam);
 }
 
 export function resize() {
