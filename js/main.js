@@ -22,22 +22,18 @@ recorder.connectInput(micSource);
 // BUTTONS
 let recordbtn = document.getElementById("record");
 let playbtn = document.getElementById("play");
-let resbutton = document.getElementById("resize");
 let uploadbtn = document.getElementById("upload");
 let downloadbtn = document.getElementById("download");
 
-
-let recindex = false;
-
 recordbtn.onclick = async () => {
     await context.resume();
-    recindex = !recindex;
 
-    if (recindex) {
-        rnbo.startRec();
-        recorder.startRecording();
-    } else {
-        rnbo.stopRec();
+    if (!recorder.isRecording) {
+        // 60 sekunden recorden
+        recorder.recordFor(60_000, (progress) => {
+            barFill.style.width = `${progress * 100}%`;
+        });
+        } else {
         recorder.stopRecording();
     }
 };
@@ -46,6 +42,7 @@ let playindex = false;
 
 playbtn.onclick = async () => {
     await context.resume();
+    
     playindex = !playindex;
 
     if (playindex) {
@@ -55,12 +52,6 @@ playbtn.onclick = async () => {
     }
 };
 
-resbutton.onclick = async () => {
-    await context.resume();
-
-    rnbo.resize;
-};
-
 uploadbtn.onclick = async () => {
     recorder.uploadFile();
 };
@@ -68,6 +59,13 @@ uploadbtn.onclick = async () => {
 downloadbtn.onclick = async () => {
     rnbo.download();
 };
+
+// PSEUDO
+// ALARM async {
+// await rnbo.download(); (was wenn wlan reinkackt, nach einer minute download fail einfach ignorieren?)
+// blumio = 1; NVM IST SCHON IN DOWNLOAD
+// rnbo.play();
+// };
 
 
 // RECORDER STUFF

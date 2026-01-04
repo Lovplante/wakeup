@@ -1,0 +1,11 @@
+#bar {
+    width: 80vw;
+    height: 2vh;
+    background: #222;
+}
+
+#barFill {
+    height: 100%;
+    width: 0%;
+    background: blue;
+}

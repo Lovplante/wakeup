@@ -8,14 +8,15 @@ let device;
 let recparam;
 let playparam; 
 let resizeparam;
+let blumioparam;
 let audioCtx;
 
 export function startRec() {
-    recparam.value = 1;
+    // recparam.value = 1;
 }
 
 export function stopRec() {
-    recparam.value = 0;
+    // recparam.value = 0;
 };
 
 export function play() {
@@ -26,9 +27,9 @@ export function stop() {
     playparam.value = 0;
 }
 
-export function resize() {
-    resizeparam.value = 1;
-};
+// export function resize() {
+//     resizeparam.value = 1;
+// };
 
 // async function
 export async function initRnbo(context) {
@@ -37,7 +38,7 @@ export async function initRnbo(context) {
 
     // CREATE RNBO
     // hier den patch importen
-    let rawPatcher = await fetch ("export/wecker2.export.json");
+    let rawPatcher = await fetch ("export/wecker3.export.json");
     // console.log(rawPatcher);
     let patcher = await rawPatcher.json();
 
@@ -81,16 +82,30 @@ export function connectOutput(dest) {
 };
 
 
+//  DOWNLOAD 
+
 export async function download() {
     try {
+        // also wir fetchen audiofile vom serber
         let fileResponse = await fetch("../web2/recordings/recB.wav");
         if (!fileResponse.ok) throw new Error("file no bueno");    
 
+        //  so decoden 
         let arrayBuf = await fileResponse.arrayBuffer();
         let message = await audioCtx.decodeAudioData(arrayBuf);
 
-        await device.setDataBuffer("record", message);
+        // buffer beschreiben
+        await device.setDataBuffer("message", message);
+
+        // so hier den audiolength trigger triggern
+        blumioparam = device.parametersById.get("blumio")
         console.log("ja sollte gut laufen");
+        blumioparam.value = 1;
+
+        // tester 
+        let testparam = device.parametersById.get("tester");
+        testparam.value = 1;
+        console.log(testparam.value);
     } catch (err) {
         console.log("pfuhh ne");
     }

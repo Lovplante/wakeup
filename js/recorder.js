@@ -7,6 +7,9 @@ export let recordingBuffer = null;
 let recordingStream = null;
 let source = null;
 let context = null;
+export let isRecording = false;
+
+// Audio IN/OUTPU
 
 export function connectInput(sourceMain) {
     source = sourceMain;
@@ -17,14 +20,53 @@ export function connectInput(sourceMain) {
     const destination = context.createMediaStreamDestination();
     sourceMain.connect(destination);
     recordingStream = destination.stream;
-}
+};
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
+
+// TimedRecord
+
+export async function recordFor(ms, onProgress) {
+    if (isRecording) return;
+
+    startRecording();
+
+    const step = 50;
+    let elapsed = 0;
+
+    // also quasi alle 50ms wird dieser loop ausgefuehrt bis time elapsed groesser ist als wie lang der timer halt gehen soll
+    while (isRecording && elapsed < ms) {
+        await sleep(step);
+        elapsed += step;
+
+        // onProgress native js callbackfunction die eben shit zurueck gibt wenn hier was abgeht (habs noch nicht ganz verstanden wie man merkt)
+        if (onProgress) {
+            onProgress(elapsed / ms);
+        }
+    }
+
+    if (isRecording) {
+        stopRecording();
+    }
+
+    // progressbar wird auf 1 gesetzt wenn recording finished
+    if (onProgress) {
+        onProgress(1);
+    }
+};
+
 
 export function startRecording() {
+
     // ja obv wenn wir keinen stream haben kann auch nicht recorded werden
     if (!recordingStream) {
         console.error("Recorder not connected to a source!");
         return;
     }
+
+    isRecording = true;
 
     audioChunks = [];
     recorder = new MediaRecorder(recordingStream);
@@ -57,6 +99,7 @@ export function startRecording() {
 };
 
 export function stopRecording() {
+    isRecording = false;
     if (!recorder) return;
     recorder.stop();
     console.log("Recording stopped");
