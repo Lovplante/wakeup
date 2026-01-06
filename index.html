@@ -34,20 +34,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAMANJAWOLLHAHAHAHAHHAHAHAHAHAH</title>
     <script type="text/javascript" src="https://cdn.cycling74.com/rnbo/latest/rnbo.min.js"></script>
+    <script type="module" src="js/ui.js" defer></script>
+    <script src="js/noise.js" defer></script>
+    <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="style/stylesheet.css">
 
 </head>
 <body>
-    <button id="record">record</button>
-    <button id="play">play</button>
-    <button id="upload">upload file to STRATO WEB SERVER YEEHAW</button>
-    <button id="download">try to pull message</button>
 
-    <div id="bar">
-      <div id="barFill"></div>
-    </div>
+  <section id="recordSctn" class="step-active">
+  <button id="record">Record Message</button>
+  
+  <div id="bar">
+    <div id="barFill"></div>
+  </div>
+
+  <!-- this needs to show up later -->
+  <button id="upload">Yeah this one was good!</button>
+  </section>
 
 
-    <script type="module" src="js/main.js"></script>
+  <section id="timerSctn" class="step">
+  <div class="time-picker">
+    <div class="wheel" id="hourWheel"></div>
+    <div class="separator"></div>
+    <div class="wheel" id="minuteWheel"></div>
+  </div>
+
+  <button id="setAlarm">Set Alarm</button>
+  </section>
+
+  <section id="AlarmSet" class="step">
+    <p>Alarm Set!</p>
+    <button>cancel alarm</button>
+  </section>
+  
+  <section id="Alarm" class="step">
+  <button id="stopAlarm">Stop Alarm</button>
+  </section>
+
 </body>
 </html>

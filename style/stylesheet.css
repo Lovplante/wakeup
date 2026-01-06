@@ -1,11 +1,140 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* -------------------- PROGRESS BAR -------------------- */
 #bar {
     width: 80vw;
     height: 2vh;
     background: #222;
+    border-radius: 1vh;
+    overflow: hidden;
+    margin: 2vh auto;
 }
 
 #barFill {
     height: 100%;
     width: 0%;
-    background: blue;
+    background: #1e90ff; /* nicer blue */
+    transition: width 0.1s linear;
+}
+
+/* TIME PICKER */
+.time-picker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 50vh;
+    user-select: none;
+    position: relative;
+}
+
+/* Wheel container */
+.wheel {
+    width: 25vw;
+    height: 30vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+
+    /* Fade top/bottom via mask */
+    mask-image: linear-gradient(to bottom, transparent 0%, black 40%, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 40%, black 60%, transparent 100%);
+}
+
+/* Scrollbar hidden */
+.wheel::-webkit-scrollbar {
+    display: none;
+}
+
+/* Wheel items */
+.wheel div {
+    height: 10vh;
+    line-height: 10vh;
+    font-size: 5vh;
+    text-align: center;
+    scroll-snap-align: center;
+    color: black;
+    opacity: 1; /* now always 1; fade handled by mask */
+}
+
+/* Center line separator */
+.separator {
+    width: 4px;
+    height: 30vh;
+    background: black;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 10;
+}
+
+
+
+
+/* NOISE */
+/* Make the video cover the full screen */
+#background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1; /* keep behind content */
+}
+
+#noise-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* scale & crop nicely */
+  filter: blur(10px) brightness(0.8) saturate(1.2); /* optional effects */
+}
+
+/* Example content styling */
+#content {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-align: center;
+  margin-top: 20vh;
+  font-family: sans-serif;
+}
+
+
+/* UX */
+
+.step {
+    display: none;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+.step-active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 2s ease;
+}
+
+#upload {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s ease;
+}
+
+#upload.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 2s ease;
 }

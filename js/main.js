@@ -1,5 +1,7 @@
 import * as rnbo from "./rnbo.js";
 import * as recorder from "./recorder.js";
+import * as alarm from "./alarm.js";
+import * as ui from "./ui.js";
 
 // AUDIO CONTEXT
 let WAContext = window.AudioContext || window.webkitAudioContext;
@@ -21,9 +23,9 @@ recorder.connectInput(micSource);
 
 // BUTTONS
 let recordbtn = document.getElementById("record");
-let playbtn = document.getElementById("play");
 let uploadbtn = document.getElementById("upload");
-let downloadbtn = document.getElementById("download");
+let alarmbtn = document.getElementById("setAlarm");
+let stopAlarmbtn = document.getElementById("stopAlarm");
 
 recordbtn.onclick = async () => {
     await context.resume();
@@ -33,39 +35,53 @@ recordbtn.onclick = async () => {
         recorder.recordFor(60_000, (progress) => {
             barFill.style.width = `${progress * 100}%`;
         });
+
+        recordbtn.textContent = "Stop recording";
         } else {
         recorder.stopRecording();
-    }
-};
 
-let playindex = false;
-
-playbtn.onclick = async () => {
-    await context.resume();
-    
-    playindex = !playindex;
-
-    if (playindex) {
-        rnbo.play();
-    } else {
-        rnbo.stop();
+        recordbtn.textContent = "Start recording";
+        uploadbtn.classList.add("visible");
     }
 };
 
 uploadbtn.onclick = async () => {
-    recorder.uploadFile();
+    await recorder.uploadFile();
+
+    ui.goToStep("recordSctn", "timerSctn");
 };
 
-downloadbtn.onclick = async () => {
-    rnbo.download();
+
+
+// ALARM 
+
+alarmbtn.onclick = async () => {
+    const [hours, minutes] = ui.setTime();
+    
+    const alarmDate = alarm.getNextAlarmDate(hours, minutes);
+    const now = Date.now();
+    
+    // also hier schedulen wir den alarm 
+    alarm.scheduleAlarm(alarmDate, () => {
+        rnbo.play();
+        ui.goToStep("AlarmSet", "Alarm");
+    }); 
+    
+    const fMin = 5 * 60 * 1000;
+    const preloadDate = Math.max(now, alarmDate.getTime() - fMin);
+    
+    // hier schedulen wir den download vor dem alarm
+    alarm.scheduleAlarm(new Date(preloadDate), () => {
+        rnbo.download();
+    }); 
+
+    // advance ui (haengt mit der id von unseren html ab)
+    ui.goToStep("timerSctn", "AlarmSet")
+}
+
+
+stopAlarmbtn.onclick = async () => {
+    await context.resume();
+    rnbo.stop();
+    ui.goToStep("Alarm", "recordSctn")
 };
-
-// PSEUDO
-// ALARM async {
-// await rnbo.download(); (was wenn wlan reinkackt, nach einer minute download fail einfach ignorieren?)
-// blumio = 1; NVM IST SCHON IN DOWNLOAD
-// rnbo.play();
-// };
-
-
-// RECORDER STUFF

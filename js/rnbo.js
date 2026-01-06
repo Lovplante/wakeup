@@ -101,11 +101,7 @@ export async function download() {
         blumioparam = device.parametersById.get("blumio")
         console.log("ja sollte gut laufen");
         blumioparam.value = 1;
-
-        // tester 
-        let testparam = device.parametersById.get("tester");
-        testparam.value = 1;
-        console.log(testparam.value);
+        
     } catch (err) {
         console.log("pfuhh ne");
     }
