@@ -1,0 +1,38 @@
+[
+  {
+    "id": "love1",
+    "file": "export2/media/34.wav"
+  },
+  {
+    "id": "love2",
+    "file": "export2/media/50.wav"
+  },
+  {
+    "id": "love3",
+    "file": "export2/media/80.wav"
+  },
+  {
+    "id": "none1",
+    "file": "export2/media/34.wav"
+  },
+  {
+    "id": "none2",
+    "file": "export2/media/50.wav"
+  },
+  {
+    "id": "none3",
+    "file": "export2/media/80.wav"
+  },
+  {
+    "id": "goof1",
+    "file": "export2/media/34.wav"
+  },
+  {
+    "id": "goof2",
+    "file": "export2/media/50.wav"
+  },
+  {
+    "id": "goof3",
+    "file": "export2/media/80.wav"
+  }
+]

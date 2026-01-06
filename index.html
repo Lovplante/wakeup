@@ -42,15 +42,35 @@
 </head>
 <body>
 
-  <section id="recordSctn" class="step-active">
+  <section id="recordSctn" class="step step-active">
   <button id="record">Record Message</button>
   
   <div id="bar">
     <div id="barFill"></div>
+    <span id="barText">Remaining Time</span>
   </div>
 
   <!-- this needs to show up later -->
   <button id="upload">Yeah this one was good!</button>
+  </section>
+
+  <section id="mood" class="step">
+    <p id="Text"> What mood did your Recording have?</p>    
+
+    <div class="slider">
+      <span class="emoji">LoveyDovey</span>
+      <input
+      id="timeSlider"
+      type="range"
+      min="0"
+      max="100"
+      step="1"
+      value="50"
+      />
+      <span class="emoji">Goofy</span>
+    </div>
+
+    <button id="mood">Yeah</button>
   </section>
 
 

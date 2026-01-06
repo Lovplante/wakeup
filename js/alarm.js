@@ -20,8 +20,10 @@ export function scheduleAlarm(alarmDate, onAlarm) {
 
     console.log(`Alarm set for ${alarmDate}. Will trigger in ${(msUntilAlarm)/1000} s`);
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
         console.log("wakeup B)");
         if (onAlarm) onAlarm();
     }, msUntilAlarm);
+
+    return timeoutId;
 }

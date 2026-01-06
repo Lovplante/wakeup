@@ -28,7 +28,7 @@ function sleep(ms) {
 
 // TimedRecord
 
-export async function recordFor(ms, onProgress) {
+export async function recordFor(ms, onProgress, recordbtn, uploadbtn) {
     if (isRecording) return;
 
     startRecording();
@@ -49,6 +49,9 @@ export async function recordFor(ms, onProgress) {
 
     if (isRecording) {
         stopRecording();
+
+        recordbtn.textContent = "Record Again";
+        uploadbtn.classList.add("visible");
     }
 
     // progressbar wird auf 1 gesetzt wenn recording finished
@@ -141,3 +144,26 @@ export async function uploadFile() {
             console.error(e);
         }
 };
+
+// THIS AINT WORKING BRUVVVVVV
+export function updateBar(progress) {
+    const bar = document.getElementById("bar");
+    const barFill = document.getElementById("barFill");
+    const barText = document.getElementById("barText");
+
+    const barWidth = bar.offsetWidth;
+    const fillWidth = progress * barWidth;
+
+    // update fill width
+    barFill.style.width = `${progress * 100}%`;
+
+    // get the horizontal position of the text (center)
+    const textX = barWidth / 2;
+
+    // invert text color depending on whether the text is over the fill
+    if (textX <= fillWidth) {
+        barText.style.color = "black"; // over white fill
+    } else {
+        barText.style.color = "white"; // over black background
+    }
+}

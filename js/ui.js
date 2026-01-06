@@ -72,11 +72,9 @@ const next = document.getElementById(nextId);
 
     if (current) {
         current.classList.remove("step-active");
-        current.classList.add("step");
     };
 
     if (next) {
-        next.classList.remove("step");
         next.classList.add("step-active");
     };
 }

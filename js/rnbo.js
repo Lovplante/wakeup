@@ -7,23 +7,20 @@ let device;
 // das der parameter
 let recparam;
 let playparam; 
-let resizeparam;
+let stopparam;
+let moodparam;
 let blumioparam;
 let audioCtx;
 
-export function startRec() {
-    // recparam.value = 1;
-}
 
-export function stopRec() {
-    // recparam.value = 0;
-};
-
-export function play() {
+export function play(mood) {
+    moodparam.value = mood;
     playparam.value = 1;
+    stopparam.value = 0;
 };
 
 export function stop() {
+    stopparam.value = 1;
     playparam.value = 0;
 }
 
@@ -38,7 +35,7 @@ export async function initRnbo(context) {
 
     // CREATE RNBO
     // hier den patch importen
-    let rawPatcher = await fetch ("export/wecker3.export.json");
+    let rawPatcher = await fetch ("export2/wecker3.export.json");
     // console.log(rawPatcher);
     let patcher = await rawPatcher.json();
 
@@ -48,16 +45,16 @@ export async function initRnbo(context) {
     // BUFFERS
 
     // LOCAL BUFFERS
-    let dependencies = await fetch("export/dependencies.json");
+    let dependencies = await fetch("export2/dependencies.json");
     dependencies = await dependencies.json();
 
     // into device laden
     const results = await device.loadDataBufferDependencies(dependencies);
     results.forEach(result => {
         if (result.type === "success") {
-            console.log('oh yeah mit id ${result.id}');
+            console.log(`oh yeah mit id ${result.id}`);
         } else {
-            console.log('oh no mit id ${result.id}, ${result.error}')
+            console.log(`oh no mit id ${result.id}, ${result.error}`)
         }
     });
 
@@ -65,8 +62,10 @@ export async function initRnbo(context) {
     recparam = device.parametersById.get("rec");
 
     playparam = device.parametersById.get("play");
+    
+    stopparam = device.parametersById.get("stop");
 
-    resizeparam = device.parametersById.get("resize");
+    moodparam = device.parametersById.get("mood");
 };
 
 // CONNECT IN/OUTPUT
