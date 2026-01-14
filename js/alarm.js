@@ -3,6 +3,7 @@ export function getNextAlarmDate(hour, minute) {
     const alarm = new Date();
     alarm.setHours(hour, minute, 0, 0);
 
+    // wenn schon vorbeigegangen ist die zeit, wird auf morgen gesetzt
     if (alarm <= now) {
         alarm.setDate(alarm.getDate() + 1);
     }
@@ -15,15 +16,18 @@ function getMsUntil(date) {
 };
 
 export function scheduleAlarm(alarmDate, onAlarm) {
-    // const alarmDate = getNextAlarmDate(hour, minute);
+    // wie viele ms noch bis der alarm schiessen soll
     const msUntilAlarm = getMsUntil(alarmDate);
 
     console.log(`Alarm set for ${alarmDate}. Will trigger in ${(msUntilAlarm)/1000} s`);
 
-    const timeoutId = setTimeout(() => {
-        console.log("wakeup B)");
+    // checked jede sekunde obdie weckzeit erreicht ist, dadurch zuverlaessiger
+    const timeoutId = setInterval(() => {
+        if (Date.now() >= alarmDate.getTime()) {
+        clearInterval(timeoutId);
         if (onAlarm) onAlarm();
-    }, msUntilAlarm);
+        }
+    }, 1000);
 
     return timeoutId;
 }

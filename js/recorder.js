@@ -167,3 +167,6 @@ export function updateBar(progress) {
         barText.style.color = "white"; // over black background
     }
 }
+
+
+

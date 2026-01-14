@@ -8,29 +8,34 @@ let WAContext = window.AudioContext || window.webkitAudioContext;
 let context = new WAContext();
 
 // INIT JS
-await rnbo.initRnbo(context);
+rnbo.initRnbo(context);
 
+let stream;
+let micSource;
 
-// IN/OUTPUT SETUP
-const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-const micSource = context.createMediaStreamSource(stream);
+let audioUnlocked = false;
 
-rnbo.connectInput(micSource);
-rnbo.connectOutput(context.destination);
-recorder.connectInput(micSource);
-
-
-
-// BUTTONS
 let recordbtn = document.getElementById("record");
 let uploadbtn = document.getElementById("upload");
-let moodbtn = document.getElementById("mood");
+let moodbtn = document.getElementById("moodBtn");
 let alarmbtn = document.getElementById("setAlarm");
-let cancelbtn = document.getElementById("AlarmSet");
+let cancelbtn = document.getElementById("cancelBtn");
 let stopAlarmbtn = document.getElementById("stopAlarm");
+let alarmSet = document.getElementById("alarmSetText");
 
 recordbtn.onclick = async () => {
+    await unlockAudio();
     await context.resume();
+    if (!stream) {
+        // IN/OUTPUT SETUP
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    micSource = context.createMediaStreamSource(stream);
+
+    rnbo.connectInput(micSource);
+    rnbo.connectOutput(context.destination);
+    recorder.connectInput(micSource);
+    }
+
 
     if (!recorder.isRecording) {
         // 60 sekunden recorden
@@ -51,9 +56,16 @@ recordbtn.onclick = async () => {
 };
 
 uploadbtn.onclick = async () => {
-    await recorder.uploadFile();
+    await context.resume();
 
+    // uploadbtn.disabled = true;
+    // uploadbtn.textContent = "Uploading...";
+
+    recorder.uploadFile();
+
+    // uploadbtn.textContent = "Uploaded";
     ui.goToStep("recordSctn", "mood");
+    uploadbtn.classList.remove("visible");
 };
 
 // jetzt hier eval into
@@ -82,26 +94,39 @@ let alarmTimeoutId;
 let preloadTimeoutId;
 
 alarmbtn.onclick = async () => {
+    await context.resume();
+    
     const [hours, minutes] = ui.setTime();
     const alarmDate = alarm.getNextAlarmDate(hours, minutes);
     const now = Date.now();
     
     // also hier schedulen wir den alarm 
     alarmTimeoutId = alarm.scheduleAlarm(alarmDate, () => {
+        context.resume();
         rnbo.play(mood);
         ui.goToStep("AlarmSet", "Alarm");
     }); 
     
+    // wie viele minuten fuer den prefire
     const fMin = 5 * 60 * 1000;
+    // halt die zeit bis zum alarm minus 5 minuten
     const preloadDate = Math.max(now, alarmDate.getTime() - fMin);
     
     // hier schedulen wir den download vor dem alarm
     preloadTimeoutId = alarm.scheduleAlarm(new Date(preloadDate), () => {
+        context.resume();
         rnbo.download();
     }); 
 
     // advance ui (haengt mit der id von unseren html ab)
     ui.goToStep("timerSctn", "AlarmSet")
+    // alarmSet.textContent = `${alarmDate}`;
+    
+    // wie viel uhr mein freund!
+    alarmSet.textContent = alarmDate.toLocaleDateString([], {
+        hour: "2-digit",
+        minute:"2-digit"
+    });
 }
 
 
@@ -121,3 +146,19 @@ stopAlarmbtn.onclick = async () => {
     rnbo.stop();
     ui.goToStep("Alarm", "recordSctn")
 };
+
+
+async function unlockAudio() {
+    if (audioUnlocked) return;
+
+    await context.resume();
+
+    // iOS Safari hack
+    const buffer = context.createBuffer(1, 1, 22050);
+    const src = context.createBufferSource();
+    src.buffer = buffer;
+    src.connect(context.destination);
+    src.start(0);
+
+    audioUnlocked = true;
+}

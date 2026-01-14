@@ -24,6 +24,8 @@
 ........-++####+###++++##+++++--+++-######+++++---###+##+##+++++++-...-++###+###++-......  .........
 .........-#####+###++++####+#+.. ...+++++++++++++++++++++++++-..  .    ..-+++++--........  .........
 ..........----...........            -#####++++-----++--......  ...  .  .  ....  ...................
+
+Hey Christian
 -->
 
 
@@ -58,7 +60,7 @@
     <p id="Text"> What mood did your Recording have?</p>    
 
     <div class="slider">
-      <span class="emoji">LoveyDovey</span>
+      <span class="emoji">🥰</span>
       <input
       id="timeSlider"
       type="range"
@@ -67,14 +69,15 @@
       step="1"
       value="50"
       />
-      <span class="emoji">Goofy</span>
+      <span class="emoji">🥴</span>
     </div>
 
-    <button id="mood">Yeah</button>
+    <button id="moodBtn">Yeah</button>
   </section>
 
 
   <section id="timerSctn" class="step">
+  <p>Set Alarm Time</p>
   <div class="time-picker">
     <div class="wheel" id="hourWheel"></div>
     <div class="separator"></div>
@@ -85,11 +88,13 @@
   </section>
 
   <section id="AlarmSet" class="step">
-    <p>Alarm Set!</p>
-    <button>cancel alarm</button>
+    <p>Alarm set for:</p>
+    <p id="alarmSetText">No Bueno!</p>
+    <button id="cancelBtn">cancel alarm</button>
   </section>
   
   <section id="Alarm" class="step">
+  <p>Alarm!</p>
   <button id="stopAlarm">Stop Alarm</button>
   </section>
 

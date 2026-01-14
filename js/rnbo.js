@@ -1,5 +1,4 @@
 // so nochmal!! create device aus rnbo
-console.log("RNO", RNBO);
 const {createDevice} = RNBO;
 let device;
 
@@ -30,11 +29,13 @@ export function stop() {
 
 // async function
 export async function initRnbo(context) {
+    
     audioCtx = context;
     if (!context) throw new Error("no Audio Context");
 
     // CREATE RNBO
     // hier den patch importen
+    console.log("pulling audio");
     let rawPatcher = await fetch ("export2/wecker3.export.json");
     // console.log(rawPatcher);
     let patcher = await rawPatcher.json();
@@ -86,6 +87,7 @@ export function connectOutput(dest) {
 export async function download() {
     try {
         // also wir fetchen audiofile vom serber
+
         let fileResponse = await fetch("../web2/recordings/recB.wav");
         if (!fileResponse.ok) throw new Error("file no bueno");    
 

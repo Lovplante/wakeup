@@ -2,19 +2,66 @@ html, body {
     height: 100%;
     margin: 0;
     overflow: hidden;
-    font-family: sans-serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-family: 'ABC';
+    padding: 0;
 }
 
-/* -------------------- PROGRESS BAR -------------------- */
+p {
+    margin: 10vh;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'ABC';
+    src: url('ABC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* BUTTONS */
+
+button {
+    font-family: 'ABC';
+    width: auto;
+    max-width: 80vw;      
+    min-width: 250px;      
+
+    padding: 0 2rem;
+    margin: 10vh;
+    border-radius: 100vh;  
+    border: 2px solid black;
+
+    background: transparent;
+    color: black;
+    font-size: 1rem;
+
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    button:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+}
+
+button:active {
+    background: rgba(0, 0, 0, 0.05);
+    transform: scale(0.97);
+}
+
+
+/* PROGRESS BAR */
 #bar {
     width: 80vw;
-    height: 2vh;
+    height: 1.5rem;
     background: black;
     border-radius: 100vh;
     overflow: hidden;
-    margin: 2vh auto;
+    margin: 0;
     position: relative;
-    border: 1px solid black; /* outline */
+    border: 2px solid black; /* outline */
     box-sizing: border-box;
 }
 
@@ -37,7 +84,7 @@ html, body {
     justify-content: center;
     color: white; /* initial color for black background */
     pointer-events: none;
-    font-size: 1.5vh; /* optional */
+    font-size: 1rem;
 }
 
 /* TIME PICKER */
@@ -49,6 +96,7 @@ html, body {
     height: 50vh;
     user-select: none;
     position: relative;
+    padding: 0;
 }
 
 /* Wheel container */
@@ -85,44 +133,30 @@ html, body {
 .separator {
     width: 4px;
     height: 30vh;
-    background: black;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
     z-index: 10;
+
+    /* Gradient to match wheel fade */
+    background: linear-gradient(to bottom, 
+                transparent 0%, 
+                black 40%, 
+                black 60%, 
+                transparent 100%);
+
 }
 
 
 
+/* ALARM SET */
 
-/* NOISE */
-/* Make the video cover the full screen */
-#background-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  z-index: -1; /* keep behind content */
-}
-
-#noise-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* scale & crop nicely */
-  filter: blur(10px) brightness(0.8) saturate(1.2); /* optional effects */
-}
-
-/* Example content styling */
-#content {
-  position: relative;
-  z-index: 1;
-  color: white;
-  text-align: center;
-  margin-top: 20vh;
-  font-family: sans-serif;
+#alarmSetText {
+    font-size: 7vw;
+    text-align: center;
+    color: pink;
+    min-width: 250px;
 }
 
 
@@ -141,6 +175,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0;
 }
 
 .step-active {
@@ -167,23 +202,80 @@ html, body {
 }
 
 
-/* Sliders */
-
+/* SLIDER CONTAINER */
 .slider {
     display: flex;
     align-items: center;
+    justify-content: center;     /* center slider */
     gap: 1rem;
-    width: 80vw;
-    margin: 2vh auto;
+    width: 90%;
+    max-width: 80vw;
+    margin: 0;
+    flex-wrap: wrap;             /* allow text to wrap on small screens */
 }
 
+/* TEXT + EMOJI */
 .emoji {
-    font-size: 2rem;
+    flex: 0 1 auto;              /* can shrink if needed */
+    font-size: clamp(1.5rem, 6vw, 2.5rem); /* responsive and can shrink */
+    text-align: center;
+    white-space: nowrap;
     user-select: none;
 }
 
+/* SLIDER INPUT */
 .slider input[type="range"] {
-    flex: 1;
-    margin-top: 1rem;
+    flex: 1 1 200px;             /* grow and shrink, min 200px */
+    height: 1.5rem;              /* track height */
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    min-width: 250px;            /* prevents slider from becoming tiny */
 }
 
+/* TRACK */
+.slider input[type="range"]::-webkit-slider-runnable-track {
+    height: 1.5rem;
+    border-radius: 100vw;
+    background: black;
+    border: 2px solid black;
+}
+
+.slider input[type="range"]::-moz-range-track {
+    height: 1.5rem;
+    border-radius: 999px;
+    background: black;
+    border: 2px solid black;
+}
+
+/* THUMB */
+.slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid black;
+    margin-top: -0.75rem;
+    transition: transform 0.1s ease;
+}
+
+.slider input[type="range"]::-moz-range-thumb {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid black;
+}
+
+/* HOVER & ACTIVE */
+.slider input[type="range"]:hover::-webkit-slider-thumb {
+    transform: scale(1.1);
+}
+
+.slider input[type="range"]:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+}
