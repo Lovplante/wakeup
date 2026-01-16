@@ -5,6 +5,7 @@ html, body {
     font-size: clamp(1.2rem, 3vw, 2rem);
     font-family: 'ABC';
     padding: 0;
+    background-color: rgb(253, 236, 202);
 }
 
 p {
@@ -30,14 +31,17 @@ button {
     padding: 0 2rem;
     margin: 10vh;
     border-radius: 100vh;  
-    border: 2px solid black;
+    border: 2px solid #1f1f1f;
 
     background: transparent;
-    color: black;
+    color: #1f1f1f;
+    /* color: rgb(79, 82, 47); */
     font-size: 1rem;
 
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
+
+
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -56,19 +60,19 @@ button:active {
 #bar {
     width: 80vw;
     height: 1.5rem;
-    background: black;
+    /* background: rgb(252, 119, 83); */
     border-radius: 100vh;
     overflow: hidden;
     margin: 0;
     position: relative;
-    border: 2px solid black; /* outline */
+    border: 2px solid #1f1f1f; /* outline */
     box-sizing: border-box;
 }
 
 #barFill {
     height: 100%;
     width: 0%;
-    background: white; 
+    background: rgb(176, 181, 125); 
     transition: width 0.2s ease-out;
     position: absolute;
     top: 0;
@@ -82,7 +86,8 @@ button:active {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white; /* initial color for black background */
+    color: #1f1f1f;
+    /* color: rgb(79, 82, 47);  */
     pointer-events: none;
     font-size: 1rem;
 }
@@ -109,8 +114,8 @@ button:active {
     position: relative;
 
     /* Fade top/bottom via mask */
-    mask-image: linear-gradient(to bottom, transparent 0%, black 40%, black 60%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 40%, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #1f1f1f 40%, #1f1f1f 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #1f1f1f 40%, #1f1f1f 60%, transparent 100%);
 }
 
 /* Scrollbar hidden */
@@ -125,7 +130,7 @@ button:active {
     font-size: 5vh;
     text-align: center;
     scroll-snap-align: center;
-    color: black;
+    color: #1f1f1f;
     opacity: 1; /* now always 1; fade handled by mask */
 }
 
@@ -142,8 +147,8 @@ button:active {
     /* Gradient to match wheel fade */
     background: linear-gradient(to bottom, 
                 transparent 0%, 
-                black 40%, 
-                black 60%, 
+                #1f1f1f 40%, 
+                #1f1f1f 60%, 
                 transparent 100%);
 
 }
@@ -155,7 +160,14 @@ button:active {
 #alarmSetText {
     font-size: 7vw;
     text-align: center;
-    color: pink;
+    color: rgb(176, 181, 125); 
+    min-width: 250px;
+}
+
+#alarmstart {
+    font-size: 7vw;
+    text-align: center;
+    color: rgb(176, 181, 125); 
     min-width: 250px;
 }
 
@@ -239,15 +251,15 @@ button:active {
 .slider input[type="range"]::-webkit-slider-runnable-track {
     height: 1.5rem;
     border-radius: 100vw;
-    background: black;
-    border: 2px solid black;
+    background: #1f1f1f;
+    border: 2px solid #1f1f1f;
 }
 
 .slider input[type="range"]::-moz-range-track {
     height: 1.5rem;
     border-radius: 999px;
-    background: black;
-    border: 2px solid black;
+    background: #1f1f1f;
+    border: 2px solid #1f1f1f;
 }
 
 /* THUMB */
@@ -257,8 +269,8 @@ button:active {
     height: 3rem;
     width: 3rem;
     border-radius: 50%;
-    background: white;
-    border: 2px solid black;
+    background: rgb(253, 236, 202);
+    border: 2px solid #1f1f1f;
     margin-top: -0.75rem;
     transition: transform 0.1s ease;
 }
@@ -267,8 +279,8 @@ button:active {
     height: 3rem;
     width: 3rem;
     border-radius: 50%;
-    background: white;
-    border: 2px solid black;
+    background: rgb(253, 236, 2025);
+    border: 2px solid #1f1f1f;
 }
 
 /* HOVER & ACTIVE */

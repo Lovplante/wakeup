@@ -8,7 +8,7 @@ let WAContext = window.AudioContext || window.webkitAudioContext;
 let context = new WAContext();
 
 // INIT JS
-rnbo.initRnbo(context);
+await rnbo.initRnbo(context);
 
 let stream;
 let micSource;
@@ -22,6 +22,11 @@ let alarmbtn = document.getElementById("setAlarm");
 let cancelbtn = document.getElementById("cancelBtn");
 let stopAlarmbtn = document.getElementById("stopAlarm");
 let alarmSet = document.getElementById("alarmSetText");
+let testmp3 = document.getElementById("testmp3");
+
+// testmp3.onclick = async () => {
+
+// }
 
 recordbtn.onclick = async () => {
     await unlockAudio();

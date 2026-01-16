@@ -115,7 +115,6 @@ export async function uploadFile() {
     }
 
         try {
-            // statusText.textContent = "upload laeuft"
 
             // Wav als Datei-Objekt verpacken, quasi raw binary daten soweit ich checke
             let wavBlob = bufferToWav(recordingBuffer); // recordingBuffer = your AudioBuffer
@@ -158,14 +157,7 @@ export function updateBar(progress) {
     barFill.style.width = `${progress * 100}%`;
 
     // get the horizontal position of the text (center)
-    const textX = barWidth / 2;
-
-    // invert text color depending on whether the text is over the fill
-    if (textX <= fillWidth) {
-        barText.style.color = "black"; // over white fill
-    } else {
-        barText.style.color = "white"; // over black background
-    }
+    // const textX = barWidth / 2;
 }
 
 

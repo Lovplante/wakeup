@@ -1,8 +1,5 @@
 
 // also ldog packt hier der merged buffer rein, heisst find heraus wo der den macht//recorded
-
-
-
 export function bufferToWav(buffer) {
     let numChannels = buffer.numberOfChannels;
     let numSamples = buffer.length;
@@ -100,4 +97,16 @@ export function bufferToWav(buffer) {
 
   // Diesen Blob geben wir zurück
   return wavBlob;
+}
+
+
+// MP3
+
+async function wavToMp3(url, context) {
+  const response = await fetch(url);
+  const arrayBuffer = await response.arrayBuffer();
+
+  const buffer = await context.decodeAudioData(arrayBuffer);
+
+  return audioBufferToMonoMp3;
 }
