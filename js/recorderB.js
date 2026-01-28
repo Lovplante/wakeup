@@ -119,7 +119,7 @@ export async function uploadFile() {
             // Wav als Datei-Objekt verpacken, quasi raw binary daten soweit ich checke
             let wavBlob = bufferToWav(recordingBuffer); // recordingBuffer = your AudioBuffer
             // nun kreieren wir ein audiofile aus den daten
-            let file = new File([wavBlob], "recA.wav", { type: "audio/wav" });
+            let file = new File([wavBlob], "recB.wav", { type: "audio/wav" });
 
             // datenkreierung fuer unseren php amigo
             let form = new FormData();

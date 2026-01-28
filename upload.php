@@ -21,4 +21,3 @@ echo "<pre>";
 print_r($output);
 echo "Return: $return_var";
 echo "</pre>";
-?>

@@ -23,6 +23,10 @@ export function stop() {
     playparam.value = 0;
 }
 
+export function setMood() {
+    moodparam.value = mood;
+}
+
 // export function resize() {
 //     resizeparam.value = 1;
 // };
@@ -36,7 +40,7 @@ export async function initRnbo(context) {
     // CREATE RNBO
     // hier den patch importen
     console.log("pulling audio");
-    let rawPatcher = await fetch ("export2/wecker3.export.json");
+    let rawPatcher = await fetch ("export4/wecker3.export.json");
     // console.log(rawPatcher);
     let patcher = await rawPatcher.json();
 
@@ -46,7 +50,7 @@ export async function initRnbo(context) {
     // BUFFERS
 
     // LOCAL BUFFERS
-    let dependencies = await fetch("export2/dependencies.json");
+    let dependencies = await fetch("export4/dependencies.json");
     dependencies = await dependencies.json();
 
     // into device laden

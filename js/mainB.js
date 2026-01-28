@@ -1,5 +1,5 @@
-import * as rnbo from "./rnbo.js";
-import * as recorder from "./recorder.js";
+import * as rnbo from "./rnbob.js";
+import * as recorder from "./recorderb.js";
 import * as alarm from "./alarm.js";
 import * as ui from "./ui.js";
 
@@ -66,11 +66,15 @@ uploadbtn.onclick = async () => {
     // uploadbtn.disabled = true;
     // uploadbtn.textContent = "Uploading...";
 
+    
+
     recorder.uploadFile();
 
     // uploadbtn.textContent = "Uploaded";
     ui.goToStep("recordSctn", "mood");
     uploadbtn.classList.remove("visible");
+
+    // pullMood();
 };
 
 // jetzt hier eval into
@@ -90,8 +94,18 @@ moodbtn.onclick = async () => {
         mood = 2;
     };
 
+    // upload ein file was von anderer page accessed werden kann
+    await fetch ("states/stateB.php", {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({mood})
+    });
 
     ui.goToStep("mood", "timerSctn");
+    uploadbtn.classList.remove("visible");
+
 }
 
 // ALARM 
@@ -99,6 +113,9 @@ let alarmTimeoutId;
 let preloadTimeoutId;
 
 alarmbtn.onclick = async () => {
+
+    await pullMood();
+
     await context.resume();
     
     const [hours, minutes] = ui.setTime();
@@ -108,6 +125,8 @@ alarmbtn.onclick = async () => {
     // also hier schedulen wir den alarm 
     alarmTimeoutId = alarm.scheduleAlarm(alarmDate, () => {
         context.resume();
+        // OBACHT HIER MUSST DU NOCH MOOD ZU MOOD VON ANDERE DING MACHEN
+        console.log(mood);
         rnbo.play(mood);
         ui.goToStep("AlarmSet", "Alarm");
     }); 
@@ -119,6 +138,7 @@ alarmbtn.onclick = async () => {
     
     // hier schedulen wir den download vor dem alarm
     preloadTimeoutId = alarm.scheduleAlarm(new Date(preloadDate), () => {
+
         context.resume();
         rnbo.download();
     }); 
@@ -158,7 +178,6 @@ async function unlockAudio() {
 
     await context.resume();
 
-    // iOS Safari hack
     const buffer = context.createBuffer(1, 1, 22050);
     const src = context.createBufferSource();
     src.buffer = buffer;
@@ -166,4 +185,11 @@ async function unlockAudio() {
     src.start(0);
 
     audioUnlocked = true;
+}
+
+async function pullMood() {
+    // fetch the latest mood from the server right now
+    const res = await fetch("states/getStateA.php");
+    const data = await res.json();
+    mood = data.mood;
 }
