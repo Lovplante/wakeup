@@ -8,7 +8,7 @@ let WAContext = window.AudioContext || window.webkitAudioContext;
 let context = new WAContext();
 
 // INIT JS
-await rnbo.initRnbo(context);
+rnbo.initRnbo(context);
 
 let stream;
 let micSource;

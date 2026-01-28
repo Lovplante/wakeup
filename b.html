@@ -1,0 +1,103 @@
+<!--
+  .                 ..    ....    .         ....                  . .       . ..----++---...    .   
+                    ...  ...     ...     .  ....                   .-.     ....----++++----.        
+  ......           .    .                                     ....+#+.     ....--++###+----.     . .
+ ........              ..                   ..-....          ...+####- ..  ...-..-++++----..        
+ ........  ..... .      .         ..-+++- .-.-+++#++-    ..  ...-#####-..........--.....  .    ...  
+ ........ ......               .-+#+##+#+   .-+#+#++..++..-......+#+--.-------...-+#+...+#-   ..    
+   ..-.-.........     .       -####+####+  . -+++#++.    -+--+-.....------------.+###+####++-..  .  
+.. ..----###........         -##+-####++-  ..-++++-     .+++#+.......-------------+########+-..     
+.  ....-+++#+-.....      . .     .  .+###++++++++..-+-.-+++++.-###...--.--.-.------+##+.. ...   .-. 
+ .....-+#+-.......               .+####+++####++#++####+--+++-.-##-. ...-.--.............. .        
+......-##+-.......    ...    .-+####++#+##++++####++##+++++++##+-++-+##+-. ..---....-......  .      
+......-##+-.......  ........ .-##++++++##+##+#######+##+++++##########+.--.+####+..--......         
+......-##+-........  .......-#+++++#+#+#################+++################+-----+++-...... .       
+......-##++................-#++++++++#++#################+++######################++-......        .
+......-+#++..........----------+++#++###+#################+#++++-..+##############++-......       ..
+.......-++-.........-+++++++-----++##############################+--++########+++#+--......       ..
+.......---........-+++#+##++++---+++########################++###########+++++-+###+-.....       ...
+........-.....-...-++###++++++++++++++########################+##++####+##+---++++##-.....  ..  ....
+............-.....--+++##+###++++++++++##############++#######+++##+-...-. -++++###++.....      ....
+..-####+++-.........--+##+#++++++--++++++########+++++++++++----+++.  ..-.  ..-+++++-.....   .......
+.............-----------+++++-----+#+##+++++++++++++##++##++#+-+++..-.-++-.-+.  ........... ........
+.........-++++++++++++###++++----+#++++++++-+---++###+###+#++++++-. .-+++#++-.  .-.......   ........
+........-++####+###++++##+++++--+++-######+++++---###+##+##+++++++-...-++###+###++-......  .........
+.........-#####+###++++####+#+.. ...+++++++++++++++++++++++++-..  .    ..-+++++--........  .........
+..........----...........            -#####++++-----++--......  ...  .  .  ....  ...................
+
+Hey Christian
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMANJAWOLLHAHAHAHAHHAHAHAHAHAH</title>
+    <script type="text/javascript" src="https://cdn.cycling74.com/rnbo/latest/rnbo.min.js"></script>
+    <script type="module" src="js/ui.js" defer></script>
+    <script src="js/noise.js" defer></script>
+    <script type="module" src="js/main.js" defer></script>
+    <link rel="stylesheet" href="style/stylesheet.css">
+
+</head>
+<body>
+
+  <section id="recordSctn" class="step step-active">
+  <button id="record">Record Message</button>
+  <!-- <button id="testmp3"> mp3 </button> -->
+  
+  <div id="bar">
+    <div id="barFill"></div>
+    <span id="barText">Remaining Time</span>
+  </div>
+
+  <!-- this needs to show up later -->
+  <button id="upload">Upload Message</button>
+  </section>
+
+  <section id="mood" class="step">
+    <p id="Text"> What mood did your Recording have?</p>    
+
+    <div class="slider">
+      <span class="emoji">🥰</span>
+      <input
+      id="timeSlider"
+      type="range"
+      min="0"
+      max="100"
+      step="1"
+      value="50"
+      />
+      <span class="emoji">🥴</span>
+    </div>
+
+    <button id="moodBtn">Set Mood</button>
+  </section>
+
+
+  <section id="timerSctn" class="step">
+  <p>Set Alarm Time</p>
+  <div class="time-picker">
+    <div class="wheel" id="hourWheel"></div>
+    <div class="separator"></div>
+    <div class="wheel" id="minuteWheel"></div>
+  </div>
+
+  <button id="setAlarm">Set Alarm</button>
+  </section>
+
+  <section id="AlarmSet" class="step">
+    <p>Alarm set for:</p>
+    <p id="alarmSetText">No Bueno!</p>
+    <button id="cancelBtn">Cancel Alarm</button>
+  </section>
+  
+  <section id="Alarm" class="step">
+  <p id="alarmstart">Alarm!</p>
+  <button id="stopAlarm">Stop Alarm</button>
+  </section>
+
+</body>
+</html>

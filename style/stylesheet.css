@@ -5,7 +5,7 @@ html, body {
     font-size: clamp(1.2rem, 3vw, 2rem);
     font-family: 'ABC';
     padding: 0;
-    background-color: rgb(253, 236, 202);
+    background-color: rgb(255, 243, 220);
 }
 
 p {
@@ -126,6 +126,9 @@ button:active {
 /* Wheel items */
 .wheel div {
     height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     line-height: 10vh;
     font-size: 5vh;
     text-align: center;
@@ -223,7 +226,7 @@ button:active {
     width: 90%;
     max-width: 80vw;
     margin: 0;
-    flex-wrap: wrap;             /* allow text to wrap on small screens */
+    flex-wrap: nowrap;             /* allow text to wrap on small screens */
 }
 
 /* TEXT + EMOJI */
@@ -251,7 +254,7 @@ button:active {
 .slider input[type="range"]::-webkit-slider-runnable-track {
     height: 1.5rem;
     border-radius: 100vw;
-    background: #1f1f1f;
+    background: rgb(176, 181, 125);
     border: 2px solid #1f1f1f;
 }
 
@@ -269,7 +272,7 @@ button:active {
     height: 3rem;
     width: 3rem;
     border-radius: 50%;
-    background: rgb(253, 236, 202);
+    background: rgb(255, 243, 220);
     border: 2px solid #1f1f1f;
     margin-top: -0.75rem;
     transition: transform 0.1s ease;
@@ -279,7 +282,7 @@ button:active {
     height: 3rem;
     width: 3rem;
     border-radius: 50%;
-    background: rgb(253, 236, 2025);
+    background: rgb(255, 243, 220);
     border: 2px solid #1f1f1f;
 }
 
