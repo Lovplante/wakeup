@@ -7,7 +7,7 @@ import * as ui from "./ui.js";
 let WAContext = window.AudioContext || window.webkitAudioContext;
 let context = new WAContext();
 
-// INIT JS
+// INIT rainbow
 rnbo.initRnbo(context);
 
 let stream;
@@ -22,12 +22,15 @@ let alarmbtn = document.getElementById("setAlarm");
 let cancelbtn = document.getElementById("cancelBtn");
 let stopAlarmbtn = document.getElementById("stopAlarm");
 let alarmSet = document.getElementById("alarmSetText");
-let testmp3 = document.getElementById("testmp3");
+let skipbtn = document.getElementById("skipUpload");
 
-// testmp3.onclick = async () => {
+// VISUALIZER
+const analyzer = context.createAnalyser();
+analyzer.fftSize = 512;
 
-// }
-
+const visualEl = recordbtn;
+let vizRunning = false;
+    
 recordbtn.onclick = async () => {
     await unlockAudio();
     await context.resume();
@@ -39,6 +42,28 @@ recordbtn.onclick = async () => {
     rnbo.connectInput(micSource);
     rnbo.connectOutput(context.destination);
     recorder.connectInput(micSource);
+
+    // hier den analyzer connecten
+    micSource.connect(analyzer);
+
+    // visualizer connectern
+    vizRunning = true;
+    tick();
+
+    } else {
+        // mic ausmachen
+        stream.getTracks().forEach(t => t.stop());
+
+        micSource.disconnect(analyzer);
+        micSource.disconnect();
+        rnbo.disconnectInput();
+        recorder.disconnectInput();
+
+        vizRunning = false;
+        visualEl.style.transform = "scale(1)";
+
+        micSource = null;
+        stream = null;
     }
 
 
@@ -60,6 +85,29 @@ recordbtn.onclick = async () => {
     }
 };
 
+// ANIMATION
+
+const animData = new Uint8Array(analyzer.frequencyBinCount);
+
+function tick() {
+    if (!vizRunning) return;
+
+    analyzer.getByteTimeDomainData(animData);
+
+    let sum = 0;
+    for (let i = 0; i < animData.length; i++) {
+        const v = (animData[i] - 128) / 128;
+        sum += v * v;
+    }
+    
+    const rms = Math.sqrt(sum / animData.length);
+    const level = Math.min(1, rms * 3);
+
+    visualEl.style.transform = `scale(${1+level})`;
+
+    requestAnimationFrame(tick);
+}
+
 uploadbtn.onclick = async () => {
     await context.resume();
 
@@ -76,6 +124,11 @@ uploadbtn.onclick = async () => {
 
     // pullMood();
 };
+
+skipbtn.onclick = async () => {
+    await context.resume();
+    ui.goToStep("recordSctn", "timerSctn");
+}
 
 // jetzt hier eval into
 
@@ -95,7 +148,7 @@ moodbtn.onclick = async () => {
     };
 
     // upload ein file was von anderer page accessed werden kann
-    await fetch ("states/stateA.php", {
+    fetch ("states/stateA.php", {
         method: "POST", 
         headers: {
             "Content-Type": "application/json"
@@ -114,7 +167,7 @@ let preloadTimeoutId;
 
 alarmbtn.onclick = async () => {
 
-    await pullMood();
+    pullMood();
 
     await context.resume();
     

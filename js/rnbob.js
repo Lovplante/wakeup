@@ -85,6 +85,16 @@ export function connectOutput(dest) {
     device.node.connect(dest);
 };
 
+export function disconnectInput() {
+    if (!device) throw new Error("no device")
+    device.node.disconnect();
+};
+
+export function disconnectOutput(dest) {
+    if (!device) throw new Error("no device")
+    device.node.disconnect();
+};
+
 
 //  DOWNLOAD 
 

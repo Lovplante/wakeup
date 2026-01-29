@@ -44,6 +44,15 @@ button {
 
 }
 
+#skipUpload {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+
+    margin: 0;
+    /* min-width: none; */
+}
+
 @media (hover: hover) and (pointer: fine) {
     button:hover {
         background: rgba(0, 0, 0, 0.05);

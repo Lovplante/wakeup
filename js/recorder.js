@@ -7,6 +7,7 @@ export let recordingBuffer = null;
 let recordingStream = null;
 let source = null;
 let context = null;
+let destination = null;
 export let isRecording = false;
 
 // Audio IN/OUTPU
@@ -17,10 +18,18 @@ export function connectInput(sourceMain) {
     // hmm ich raff echt nicht warum ich mit .context da dran muss
     // so hier die destination ist quasi eine media strem node
     // heisst das ist wie ein audio device, was man noch effektieren koennte auf jeden fall koennen wir das abgreifen um zu recorden
-    const destination = context.createMediaStreamDestination();
+    destination = context.createMediaStreamDestination();
     sourceMain.connect(destination);
     recordingStream = destination.stream;
 };
+
+export function disconnectInput() {
+    if (!source || !destination) return;
+
+    // source.disconnect(destination);
+    destination.disconnect();
+    // recordingStream.getTracks().forEach(t => t.stop());
+}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -133,7 +142,7 @@ export async function uploadFile() {
 
             let text = await response.text();
 
-            if (text === "OK") {
+            if (text.includes("OK")) {
             console.log("Upload des gemergten WAV erfolgreich.");
         } else {
             console.log("no bueno");

@@ -39,6 +39,15 @@ recordbtn.onclick = async () => {
     rnbo.connectInput(micSource);
     rnbo.connectOutput(context.destination);
     recorder.connectInput(micSource);
+    } else {
+        stream.getTracks().forEach(t => t.stop());
+
+        micSource.disconnect();
+        rnbo.disconnectInput();
+        recorder.disconnectInput();
+
+        micSource = null;
+        stream = null;
     }
 
 
@@ -95,7 +104,7 @@ moodbtn.onclick = async () => {
     };
 
     // upload ein file was von anderer page accessed werden kann
-    await fetch ("states/stateB.php", {
+    fetch ("states/stateA.php", {
         method: "POST", 
         headers: {
             "Content-Type": "application/json"
@@ -114,7 +123,7 @@ let preloadTimeoutId;
 
 alarmbtn.onclick = async () => {
 
-    await pullMood();
+    pullMood();
 
     await context.resume();
     
