@@ -7,7 +7,7 @@ import * as ui from "./ui.js";
 let WAContext = window.AudioContext || window.webkitAudioContext;
 let context = new WAContext();
 
-// INIT JS
+// INIT rainbow
 rnbo.initRnbo(context);
 
 let stream;
@@ -22,33 +22,28 @@ let alarmbtn = document.getElementById("setAlarm");
 let cancelbtn = document.getElementById("cancelBtn");
 let stopAlarmbtn = document.getElementById("stopAlarm");
 let alarmSet = document.getElementById("alarmSetText");
-let testmp3 = document.getElementById("testmp3");
+let skipbtn = document.getElementById("skipUpload");
 
-// testmp3.onclick = async () => {
 
-// }
 
+    
 recordbtn.onclick = async () => {
     await unlockAudio();
     await context.resume();
     if (!stream) {
-        // IN/OUTPUT SETUP
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    micSource = context.createMediaStreamSource(stream);
+            // IN/OUTPUT SETUP
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        micSource = context.createMediaStreamSource(stream);
 
-    rnbo.connectInput(micSource);
-    rnbo.connectOutput(context.destination);
-    recorder.connectInput(micSource);
-    } else {
-        stream.getTracks().forEach(t => t.stop());
+        rnbo.connectInput(micSource);
+        rnbo.connectOutput(context.destination);
+        recorder.connectInput(micSource);
 
-        micSource.disconnect();
-        rnbo.disconnectInput();
-        recorder.disconnectInput();
+        } else {
+            // mic ausmachen
+            stream.getTracks().forEach(t => t.stop());
 
-        micSource = null;
-        stream = null;
-    }
+        }
 
 
     if (!recorder.isRecording) {
@@ -61,6 +56,7 @@ recordbtn.onclick = async () => {
         
 
         recordbtn.textContent = "Stop recording";
+        uploadbtn.classList.remove("visible");
         } else {
         recorder.stopRecording();
 
@@ -86,6 +82,12 @@ uploadbtn.onclick = async () => {
     // pullMood();
 };
 
+skipbtn.onclick = async () => {
+    await context.resume();
+    rnbo.connectOutput(context.destination);
+    ui.goToStep("recordSctn", "timerSctn");
+}
+
 // jetzt hier eval into
 
 let mood;
@@ -104,7 +106,7 @@ moodbtn.onclick = async () => {
     };
 
     // upload ein file was von anderer page accessed werden kann
-    fetch ("states/stateA.php", {
+    fetch ("states/stateB.php", {
         method: "POST", 
         headers: {
             "Content-Type": "application/json"

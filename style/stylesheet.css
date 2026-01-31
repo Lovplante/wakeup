@@ -6,6 +6,7 @@ html, body {
     font-family: 'ABC';
     padding: 0;
     background-color: rgb(255, 243, 220);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 p {
@@ -45,8 +46,9 @@ button {
 }
 
 #skipUpload {
-    position: absolute;
-    bottom: 2rem;
+    position: fixed;
+    bottom: calc(2rem + constant(safe-area-inset-bottom));
+    bottom: calc(2rem + env(safe-area-inset-bottom)); 
     right: 2rem;
 
     margin: 0;
@@ -216,13 +218,13 @@ button:active {
 #upload {
     opacity: 0;
     pointer-events: none;
-    transition: opacity 2s ease;
+    transition: opacity 1s ease;
 }
 
 #upload.visible {
     opacity: 1;
     pointer-events: auto;
-    transition: opacity 2s ease;
+    transition: opacity 1s ease;
 }
 
 

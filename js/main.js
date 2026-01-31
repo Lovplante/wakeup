@@ -24,47 +24,24 @@ let stopAlarmbtn = document.getElementById("stopAlarm");
 let alarmSet = document.getElementById("alarmSetText");
 let skipbtn = document.getElementById("skipUpload");
 
-// VISUALIZER
-const analyzer = context.createAnalyser();
-analyzer.fftSize = 512;
-
-const visualEl = recordbtn;
-let vizRunning = false;
     
 recordbtn.onclick = async () => {
     await unlockAudio();
     await context.resume();
     if (!stream) {
-        // IN/OUTPUT SETUP
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    micSource = context.createMediaStreamSource(stream);
+            // IN/OUTPUT SETUP
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        micSource = context.createMediaStreamSource(stream);
 
-    rnbo.connectInput(micSource);
-    rnbo.connectOutput(context.destination);
-    recorder.connectInput(micSource);
+        rnbo.connectInput(micSource);
+        rnbo.connectOutput(context.destination);
+        recorder.connectInput(micSource);
 
-    // hier den analyzer connecten
-    micSource.connect(analyzer);
+        } else {
+            // mic ausmachen
+            stream.getTracks().forEach(t => t.stop());
 
-    // visualizer connectern
-    vizRunning = true;
-    tick();
-
-    } else {
-        // mic ausmachen
-        stream.getTracks().forEach(t => t.stop());
-
-        micSource.disconnect(analyzer);
-        micSource.disconnect();
-        rnbo.disconnectInput();
-        recorder.disconnectInput();
-
-        vizRunning = false;
-        visualEl.style.transform = "scale(1)";
-
-        micSource = null;
-        stream = null;
-    }
+        }
 
 
     if (!recorder.isRecording) {
@@ -77,6 +54,7 @@ recordbtn.onclick = async () => {
         
 
         recordbtn.textContent = "Stop recording";
+        uploadbtn.classList.remove("visible");
         } else {
         recorder.stopRecording();
 
@@ -84,29 +62,6 @@ recordbtn.onclick = async () => {
         uploadbtn.classList.add("visible");
     }
 };
-
-// ANIMATION
-
-const animData = new Uint8Array(analyzer.frequencyBinCount);
-
-function tick() {
-    if (!vizRunning) return;
-
-    analyzer.getByteTimeDomainData(animData);
-
-    let sum = 0;
-    for (let i = 0; i < animData.length; i++) {
-        const v = (animData[i] - 128) / 128;
-        sum += v * v;
-    }
-    
-    const rms = Math.sqrt(sum / animData.length);
-    const level = Math.min(1, rms * 3);
-
-    visualEl.style.transform = `scale(${1+level})`;
-
-    requestAnimationFrame(tick);
-}
 
 uploadbtn.onclick = async () => {
     await context.resume();
@@ -127,6 +82,7 @@ uploadbtn.onclick = async () => {
 
 skipbtn.onclick = async () => {
     await context.resume();
+    rnbo.connectOutput(context.destination);
     ui.goToStep("recordSctn", "timerSctn");
 }
 
